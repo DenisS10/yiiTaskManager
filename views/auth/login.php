@@ -15,8 +15,10 @@ use yii\widgets\ActiveForm;
 //
 //endif;
     ?>
+<div style="width: 22%;">
 <? $form = ActiveForm::begin()?>
 <?= $form->field($model,'username');?>
 <?= $form->field($model,'password')->passwordInput();?>
 <?= Html::submitButton('Login',['class' => 'btn btn-success']);?>
 <? ActiveForm::end()?>
+</div>

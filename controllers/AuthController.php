@@ -44,6 +44,7 @@ class AuthController extends Controller
                 if ($_user->login == $model->username && password_verify($model->password, $_user->password) == true) {
                     header('location: main/index');
                     Yii::$app->session->setFlash('success', 'Вы успешно вошли в систему');
+                    Yii::$app->session->set('auth','ok');
                 }
             } else
                 Yii::$app->session->setFlash('error', 'Ошибка');
