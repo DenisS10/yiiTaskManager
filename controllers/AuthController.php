@@ -11,6 +11,7 @@ namespace app\controllers;
 
 use app\models\LoginForm;
 
+use app\models\SignupForm;
 use app\models\Users;
 use Yii;
 use yii\web\Controller;
@@ -29,41 +30,59 @@ class AuthController extends Controller
 //        ]);
         //$this->getUser();
     }
+
+    /**
+     * @return string
+     */
     public function actionLogin()
     {
 
-       // echo password_hash('www',PASSWORD_DEFAULT);
-
         $model = new LoginForm();
-       if($model->load(Yii::$app->request->post())){
-           if( $model->validate() )
-           {
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate()) {
+                $_user = Users::findByLogin($model->username);
+                if ($_user->login == $model->username && password_verify($model->password, $_user->password) == true) {
+                    header('location: main/index');
+                    Yii::$app->session->setFlash('success', 'Вы успешно вошли в систему');
+                }
+            } else
+                Yii::$app->session->setFlash('error', 'Ошибка');
 
-
-               $_user = Users::findByLogin($model->username);
-//               echo '$_user->login = '.$_user->login;
-//               echo '$model->username = '.$model->username;
-
-               if($_user->login == $model->username && (password_verify($model->password,$_user->password))== true) {
-                   Yii::$app->session->setFlash('success','Вы успешно вошли в систему');
-//                   echo '<pre>'.'ok';
-//                   print_r($_user);
-//                   exit();
-               }
-           }
-           else
-               Yii::$app->session->setFlash('error','Ошибка');
-
-       }
-            //$login = Yii::$app->request->post('login');
-//            echo '<pre>'.'lk';
-//            print_r($login);
-
-
-
-        //$model->password = '';
+        }
         return $this->render('login', [
             'model' => $model,
         ]);
+    }
+
+    public function actionSignup()
+    {
+
+        $model = new SignupForm();
+
+        $newUser = new Users();
+        if ($model->load(Yii::$app->request->post())) {
+
+            if ($model->validate()) {
+
+                if ($model->password === $model->passwordReload) {
+
+
+                    $_password = password_hash($model->password, PASSWORD_DEFAULT);
+                    $newUser->login = $model->username;
+                    $newUser->user_name = 'NoName';
+                    $newUser->password = $_password;
+                    $newUser->first_time = time();
+                    $newUser->save();
+                    $this->refresh();
+                      // $newUser->errors;
+                }
+            }
+
+
+        }
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
+
     }
 }
