@@ -11,6 +11,7 @@ namespace app\controllers;
 
 use app\models\LoginForm;
 
+use app\models\MyAccountForm;
 use app\models\SignupForm;
 use app\models\Users;
 use Yii;
@@ -93,5 +94,15 @@ class AuthController extends Controller
             'model' => $model,
         ]);
 
+    }
+    public function actionMyaccount()
+    {
+        $currUser = Users::getUserBySessionId();
+        $model = new MyAccountForm();
+
+
+        $this->render('myaccount',[
+            'model' => $model,
+        ]);
     }
 }

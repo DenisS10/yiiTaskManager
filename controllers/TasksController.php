@@ -121,15 +121,7 @@ class TasksController extends Controller
         $this->redirect('view');
     }
 
-    public function actionLk()
-    {
-        echo '<pre>';
-        print_r(Users::getUserBySessionId());
-        exit();
-        $this->render('myaccount',[
-            'model' => $model,
-            ]);
-    }
+
 
 
 }

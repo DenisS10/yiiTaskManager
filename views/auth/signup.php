@@ -9,4 +9,4 @@ use yii\widgets\ActiveForm;?>
 <?= $form->field($model,'passwordReload')->passwordInput();?>
 <?= Html::submitButton('Login',['class' => 'btn btn-success']);?>
 <? ActiveForm::end()?>
-    </div>
+</div>
