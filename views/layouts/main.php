@@ -41,6 +41,7 @@ AppAsset::register($this);
             ['label' => 'Add task', 'url' => ['/tasks/add']],
             ['label' => 'Sign Up', 'url' => ['/auth/signup']],
             ['label' => 'My Account', 'url' => ['/auth/myaccount']],
+            ['label' => 'Logout', 'url' => ['/auth/logout']],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/auth/login']]
             ) : (

@@ -3,8 +3,6 @@
 namespace app\models;
 
 use Yii;
-use yii\db\ActiveRecord;
-use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "users".
@@ -13,11 +11,11 @@ use yii\web\IdentityInterface;
  * @property string $login
  * @property string $password
  * @property int $first_time
- * @property string $user_name
+ * @property int $mod_time
  *
  * @property Task[] $tasks
  */
-class Users extends ActiveRecord
+class Users extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -33,11 +31,10 @@ class Users extends ActiveRecord
     public function rules()
     {
         return [
-            [['login', 'password', 'first_time', 'user_name'], 'required'],
-            [['first_time'], 'integer'],
+            [['login', 'password', 'first_time', 'mod_time'], 'required'],
+            [['first_time', 'mod_time'], 'integer'],
             [['login'], 'string', 'max' => 50],
             [['password'], 'string', 'max' => 200],
-            [['user_name'], 'string', 'max' => 25],
         ];
     }
 
@@ -51,7 +48,7 @@ class Users extends ActiveRecord
             'login' => 'Login',
             'password' => 'Password',
             'first_time' => 'First Time',
-            'user_name' => 'User Name',
+            'mod_time' => 'Mod Time',
         ];
     }
 

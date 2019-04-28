@@ -22,6 +22,8 @@ class AuthController extends Controller
 {
     public function actionIndex()
     {
+        if (!Yii::$app->session->get('auth') || Yii::$app->session->get('auth') != 'ok')
+            $this->redirect('login');
 //        Users::findByLogin('www');
 //        exit();
 //        Users::getLoginById(76);
@@ -37,7 +39,8 @@ class AuthController extends Controller
      */
     public function actionLogin()
     {
-
+       // if (!Yii::$app->session->get('auth') || Yii::$app->session->get('auth') != 'ok')
+            //$this->redirect('login');
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($model->validate()) {
@@ -45,7 +48,7 @@ class AuthController extends Controller
                 if ($_user->login == $model->username && password_verify($model->password, $_user->password) == true) {
                     header('location: main/index');
                     Yii::$app->session->setFlash('success', 'Вы успешно вошли в систему');
-                    if(Yii::$app->session->isActive) {
+                    if (Yii::$app->session->isActive) {
                         Yii::$app->session->open();
                         Yii::$app->session->set('id', $_user->id);
                         Yii::$app->session->set('auth', 'ok');
@@ -79,12 +82,12 @@ class AuthController extends Controller
 
                     $_password = password_hash($model->password, PASSWORD_DEFAULT);
                     $newUser->login = $model->username;
-                    $newUser->user_name = '';
+                    //$newUser->user_name = '';
                     $newUser->password = $_password;
                     $newUser->first_time = time();
                     $newUser->save();
                     $this->refresh();
-                      // $newUser->errors;
+                    // $newUser->errors;
                 }
             }
 
@@ -95,14 +98,38 @@ class AuthController extends Controller
         ]);
 
     }
+
     public function actionMyaccount()
     {
+
+        if (!Yii::$app->session->get('auth') || Yii::$app->session->get('auth') != 'ok') ;
+
+
         $currUser = Users::getUserBySessionId();
         $model = new MyAccountForm();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
+            if (password_verify($model->oldPass, $currUser->password) == true) {
+                if ($model->newPass === $model->repeatNewPass) {
+                    $_password = password_hash($model->repeatNewPass, PASSWORD_DEFAULT);
+                    $currUser->password = $_password;
+                    $currUser->save();
+                    //echo 'password = '.$currUser->password;
+                }
 
-        $this->render('myaccount',[
+            }
+        }
+        return $this->render('myAccount', [
             'model' => $model,
         ]);
     }
+    public function actionLogout()
+    {
+        if (Yii::$app->session->get('auth') == 'ok' || Yii::$app->session->get('auth') != 'ok')
+            $this->redirect('login');
+        return Yii::$app->session->destroy();
+
+
+    }
+
 }
