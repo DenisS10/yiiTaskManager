@@ -15,6 +15,9 @@ use yii\widgets\ActiveForm;
 //
 //endif;
     ?>
+<?echo '<pre>';
+print_r($model);
+?>
 <div style="width: 22%;">
 <? $form = ActiveForm::begin()?>
 <?= $form->field($model,'username');?>

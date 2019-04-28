@@ -18,41 +18,68 @@ class TasksController extends Controller
 {
     public function actionView()
     {
-        $modelAdd = new AddForm();
-        $model = new Task();
-        $model=$model->getTasksByUserId();
-       // $_userId = Yii::$app->session->get('id');
-        if(!Yii::$app->session->get('auth') ||Yii::$app->session->get('auth') != 'ok' )
-            $this->redirect('auth/login');
-        if(Yii::$app->request->post('task') == null && Yii::$app->request->post('deadline')==null){
-        return $this->render('viewTasks', [
-            'model' => $model ,
-        ]);
-        }
-        else {
-            $task = Yii::$app->request->post('task');
-            $deadline = Yii::$app->request->post('deadline');
 
-            $newTask = new Task();
-            $newTask->user_id = Yii::$app->session->get('id');
-            $newTask->task = $task;
-            $newTask->deadline = $deadline;
-            $newTask->creation_date = time();
-            $newTask->save();
-            return $this->render('viewTasks', [
-                'model' => $model ,
-            ]);
-        }
+        $model = Task::getTasksByUserId();
+
+        // $_userId = Yii::$app->session->get('id');
+        if (!Yii::$app->session->get('auth') || Yii::$app->session->get('auth') != 'ok')
+            $this->redirect('/auth/login');
+
+
+//        if(Yii::$app->request->post('task') == null && Yii::$app->request->post('deadline')==null){
+        return $this->render('viewTasks', [
+            'model' => $model,
+        ]);
+
+//        else {
+
     }
+
 
     public function actionIndex()
     {
-       // $_userId = Yii::$app->session->get('auth');
+        // $_userId = Yii::$app->session->get('auth');
 
 
-       //Task::getTasksByUserId();
+        //Task::getTasksByUserId();
     }
 
+    public function actionAdd()
+    {
+        $model = new AddForm();
+        if ($model->load(Yii::$app->request->post())) ;
+        {
+            if ($model->validate()) {
+//                echo '<pre>';
+//                print_r($model);
+
+
+                $newTask = new Task();
+                $newTask->user_id = Yii::$app->session->get('id');
+                $newTask->task = $model->task;
+                $newTask->deadline = $model->deadline;
+                $newTask->creation_date = time();
+                $newTask->mod_date = 0;
+
+                $newTask->save();
+                $this->refresh();
+                $this->redirect('view');
+            }
+        }
+        return $this->render('addTask', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionModify()
+    {
+
+    }
+
+    public function actionDelete()
+    {
+
+    }
 
 
 

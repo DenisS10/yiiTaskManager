@@ -1,6 +1,4 @@
-<?php
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;?>
+
 <html>
 <head>
 
@@ -17,6 +15,7 @@ use yii\widgets\ActiveForm;?>
     </thead>
     <?
     $i = 0;
+
 
     foreach ($model as $task) {
 
@@ -52,12 +51,7 @@ use yii\widgets\ActiveForm;?>
 </table>
 
 
-<div style="width: 22%;">
-<!--    --><?// $form = ActiveForm::begin()?>
-<!--    --><?//= $form->field($modelAdd,'task');?>
-<!--    --><?//= $form->field($modelAdd,'deadline');?>
-<!--    --><?//= Html::submitButton('Send',['class' => 'btn btn-primary']);?>
-<!--    --><?// ActiveForm::end()?>
-</div>
+
+
 </body>
 </html>

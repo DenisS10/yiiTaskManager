@@ -16,20 +16,42 @@ class AddForm extends Model
     public $task;
     public $deadline;
 
+
+
+
+    /**
+     * @return array
+     */
     public function rules()
     {
         return [
-            ['username','required','message' => 'Необходимо заполнить поле',],
+            ['task', 'required', 'message' => 'Необходимо заполнить поле',],
             // ['username','string','min' => 3,'tooShort' => 'You nickname is very short'],
-            ['password','required','message' => 'Необходимо заполнить поле'],
+            ['deadline', 'required', 'message' => 'Необходимо заполнить поле'],
+            ['deadline', 'integer', 'message' => 'Введенные данные не являются числом'],
         ];
     }
 
+    /**
+     * @return array
+     */
     public function attributeLabels()
     {
         return [
-            'username' => 'Nickname',
-            'password' => 'Password',
+            'task' => 'Task',
+            'deadline' => 'Deadline',
         ];
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
