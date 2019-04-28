@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: Ден
- * Date: 27.04.2019
- * Time: 1:42
+ * Date: 28.04.2019
+ * Time: 16:11
  */
 
 namespace app\models;
@@ -11,12 +11,10 @@ namespace app\models;
 
 use yii\base\Model;
 
-class SignupForm extends Model
+class AddForm extends Model
 {
-    public $username;
-    public $password;
-    public $passwordReload;
-
+    public $task;
+    public $deadline;
 
     public function rules()
     {
@@ -24,8 +22,6 @@ class SignupForm extends Model
             ['username','required','message' => 'Необходимо заполнить поле',],
             // ['username','string','min' => 3,'tooShort' => 'You nickname is very short'],
             ['password','required','message' => 'Необходимо заполнить поле'],
-            ['passwordReload','required','message' => 'Необходимо заполнить поле'],
-           // ['password', 'compare', 'compareAttribute' => 'passwordReload'],
         ];
     }
 
@@ -34,9 +30,6 @@ class SignupForm extends Model
         return [
             'username' => 'Nickname',
             'password' => 'Password',
-            'passwordReload' => 'Repeat password'
         ];
     }
-
-
 }

@@ -44,7 +44,12 @@ class AuthController extends Controller
                 if ($_user->login == $model->username && password_verify($model->password, $_user->password) == true) {
                     header('location: main/index');
                     Yii::$app->session->setFlash('success', 'Вы успешно вошли в систему');
-                    Yii::$app->session->set('auth','ok');
+                    if(Yii::$app->session->isActive) {
+                        Yii::$app->session->open();
+                        Yii::$app->session->set('id', $_user->id);
+                        Yii::$app->session->set('auth', 'ok');
+                    }
+                    $this->redirect("/tasks/view");
                 }
             } else
                 Yii::$app->session->setFlash('error', 'Ошибка');
@@ -55,6 +60,9 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @return string
+     */
     public function actionSignup()
     {
 
@@ -70,7 +78,7 @@ class AuthController extends Controller
 
                     $_password = password_hash($model->password, PASSWORD_DEFAULT);
                     $newUser->login = $model->username;
-                    $newUser->user_name = 'NoName';
+                    $newUser->user_name = '';
                     $newUser->password = $_password;
                     $newUser->first_time = time();
                     $newUser->save();
