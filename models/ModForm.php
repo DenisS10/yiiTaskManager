@@ -9,7 +9,10 @@
 namespace app\models;
 
 
-class ModForm
-{
+use yii\base\Model;
 
+class ModForm extends Model
+{
+    public $taskMod;
+    public $deadlineMod;
 }

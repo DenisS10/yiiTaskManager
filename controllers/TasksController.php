@@ -10,6 +10,7 @@ namespace app\controllers;
 
 
 use app\models\AddForm;
+use app\models\ModForm;
 use app\models\Task;
 use Yii;
 use yii\web\Controller;
@@ -26,12 +27,11 @@ class TasksController extends Controller
             $this->redirect('/auth/login');
 
 
-//        if(Yii::$app->request->post('task') == null && Yii::$app->request->post('deadline')==null){
+
         return $this->render('viewTasks', [
             'model' => $model,
         ]);
 
-//        else {
 
     }
 
@@ -73,7 +73,35 @@ class TasksController extends Controller
 
     public function actionModify()
     {
+        $model = new ModForm();
+        $id=Yii::$app->request->get('id');
+        $currTask = Task::getTaskById($id);
+        $model->taskMod = $currTask->task;
+        $model->deadlineMod = $currTask->deadline;
+        if ($model->load(Yii::$app->request->post())) ;
+        {
+            if ($model->validate()) {
+                $modTaskSave = new Task();
+                
+                $modTaskSave->user_id = Yii::$app->session->get('id');
+                $modTaskSave->task = $model->taskMod;
+                $modTaskSave->deadline = $model->deadlineMod;
+                //$modTaskSave->creation_date = time();
+                $modTaskSave->mod_date = time();
 
+            }
+        }
+
+
+//        echo '<pre>';
+//        print_r($currTask);
+//        exit();
+
+
+
+        return $this->render('modTask', [
+            'model' => $model,
+        ]);
     }
 
     public function actionDelete()

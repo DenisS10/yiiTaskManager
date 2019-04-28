@@ -71,4 +71,10 @@ class Task extends ActiveRecord
         $id=Yii::$app->session->get('id');
         return Task::find()->andWhere(['user_id' => $id])->all();
     }
+
+    public static function getTaskById($id)
+    {
+
+        return Task::find()->andWhere(['id' => $id])->one();
+    }
 }
