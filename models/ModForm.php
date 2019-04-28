@@ -15,4 +15,28 @@ class ModForm extends Model
 {
     public $taskMod;
     public $deadlineMod;
+
+    /**
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            ['taskMod', 'required', 'message' => 'Необходимо заполнить поле',],
+            // ['username','string','min' => 3,'tooShort' => 'You nickname is very short'],
+            ['deadlineMod', 'required', 'message' => 'Необходимо заполнить поле'],
+            ['deadlineMod', 'integer', 'message' => 'Введенные данные не являются числом'],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function attributeLabels()
+    {
+        return [
+            'taskMod' => 'Task',
+            'deadlineMod' => 'Deadline',
+        ];
+    }
 }

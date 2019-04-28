@@ -78,17 +78,20 @@ class TasksController extends Controller
         $currTask = Task::getTaskById($id);
         $model->taskMod = $currTask->task;
         $model->deadlineMod = $currTask->deadline;
-        if ($model->load(Yii::$app->request->post())) ;
+        if ($model->load(Yii::$app->request->post()))
         {
             if ($model->validate()) {
-                $modTaskSave = new Task();
-                
-                $modTaskSave->user_id = Yii::$app->session->get('id');
-                $modTaskSave->task = $model->taskMod;
-                $modTaskSave->deadline = $model->deadlineMod;
-                //$modTaskSave->creation_date = time();
-                $modTaskSave->mod_date = time();
+               // echo '$model->validate()';
 
+                $currTask->user_id = Yii::$app->session->get('id');
+                $currTask->task = $model->taskMod;
+                $currTask->deadline = $model->deadlineMod;
+                //$currTask->creation_date = $currTask->creation_date;
+                $currTask->mod_date = time();
+
+                $currTask->save();
+
+                $this->redirect('view');
             }
         }
 
@@ -106,7 +109,12 @@ class TasksController extends Controller
 
     public function actionDelete()
     {
+        $id=Yii::$app->request->get('numberOfRecord');
+        $currTask = Task::getTaskById($id);
 
+
+        $currTask->delete();
+        $this->redirect('view');
     }
 
 
