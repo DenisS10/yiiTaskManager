@@ -23,7 +23,6 @@ class ModForm extends Model
     {
         return [
             ['taskMod', 'required', 'message' => 'Необходимо заполнить поле',],
-            // ['username','string','min' => 3,'tooShort' => 'You nickname is very short'],
             ['deadlineMod', 'required', 'message' => 'Необходимо заполнить поле'],
             ['deadlineMod', 'integer', 'message' => 'Введенные данные не являются числом'],
         ];

@@ -75,4 +75,10 @@ class Users extends ActiveRecord
     {
         return Users::find()->andWhere(['login' => $login])->all()[0];
     }
+
+    public static function getUserBySessionId()
+    {
+        $id = Yii::$app->session->get('id');
+        return Users::find()->andWhere(['id' => $id])->one();
+    }
 }

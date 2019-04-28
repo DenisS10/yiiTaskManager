@@ -12,6 +12,7 @@ namespace app\controllers;
 use app\models\AddForm;
 use app\models\ModForm;
 use app\models\Task;
+use app\models\Users;
 use Yii;
 use yii\web\Controller;
 
@@ -44,6 +45,9 @@ class TasksController extends Controller
         //Task::getTasksByUserId();
     }
 
+    /**
+     * @return string
+     */
     public function actionAdd()
     {
         $model = new AddForm();
@@ -62,7 +66,7 @@ class TasksController extends Controller
                 $newTask->mod_date = 0;
 
                 $newTask->save();
-                $this->refresh();
+                //$this->refresh();
                 $this->redirect('view');
             }
         }
@@ -117,6 +121,15 @@ class TasksController extends Controller
         $this->redirect('view');
     }
 
+    public function actionLk()
+    {
+        echo '<pre>';
+        print_r(Users::getUserBySessionId());
+        exit();
+        $this->render('myaccount',[
+            'model' => $model,
+            ]);
+    }
 
 
 }
