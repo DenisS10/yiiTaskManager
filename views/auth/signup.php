@@ -7,6 +7,6 @@ use yii\widgets\ActiveForm;?>
 <?= $form->field($model,'username');?>
 <?= $form->field($model,'password')->passwordInput();?>
 <?= $form->field($model,'passwordReload')->passwordInput();?>
-<?= Html::submitButton('Login',['class' => 'btn btn-success']);?>
+<?= Html::submitButton('Sign Up',['class' => 'btn btn-success']);?>
 <? ActiveForm::end()?>
 </div>

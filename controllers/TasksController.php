@@ -21,12 +21,12 @@ class TasksController extends Controller
     public function actionView()
     {
 
+
         $model = Task::getTasksByUserId();
 
         // $_userId = Yii::$app->session->get('id');
         if (!Yii::$app->session->get('auth') || Yii::$app->session->get('auth') != 'ok')
             $this->redirect('/auth/login');
-
 
 
         return $this->render('viewTasks', [
@@ -39,6 +39,8 @@ class TasksController extends Controller
 
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest)
+            $this->redirect('/auth/login');
         // $_userId = Yii::$app->session->get('auth');
 
 
@@ -50,8 +52,12 @@ class TasksController extends Controller
      */
     public function actionAdd()
     {
+//        if (Yii::$app->user->isGuest) {
+//            $this->redirect('/auth/login');
+//
+//        }
         $model = new AddForm();
-        if ($model->load(Yii::$app->request->post())) ;
+        if ($model->load(Yii::$app->request->post()))
         {
             if ($model->validate()) {
 //                echo '<pre>';
@@ -77,15 +83,16 @@ class TasksController extends Controller
 
     public function actionModify()
     {
+//        if (!Yii::$app->user->isGuest){
+            //$this->redirect('/auth/login');
         $model = new ModForm();
-        $id=Yii::$app->request->get('id');
+        $id = Yii::$app->request->get('id');
         $currTask = Task::getTaskById($id);
         $model->taskMod = $currTask->task;
         $model->deadlineMod = $currTask->deadline;
-        if ($model->load(Yii::$app->request->post()))
-        {
+        if ($model->load(Yii::$app->request->post())) {
             if ($model->validate()) {
-               // echo '$model->validate()';
+                // echo '$model->validate()';
 
                 $currTask->user_id = Yii::$app->session->get('id');
                 $currTask->task = $model->taskMod;
@@ -105,7 +112,6 @@ class TasksController extends Controller
 //        exit();
 
 
-
         return $this->render('modTask', [
             'model' => $model,
         ]);
@@ -113,15 +119,16 @@ class TasksController extends Controller
 
     public function actionDelete()
     {
-        $id=Yii::$app->request->get('numberOfRecord');
-        $currTask = Task::getTaskById($id);
+//        if (!Yii::$app->user->isGuest) {
+            $id = Yii::$app->request->get('numberOfRecord');
+            $currTask = Task::getTaskById($id);
 
 
-        $currTask->delete();
-        $this->redirect('view');
+            $currTask->delete();
+            $this->redirect('view');
+//        } else
+//            $this->redirect('/auth/login');
     }
-
-
 
 
 }

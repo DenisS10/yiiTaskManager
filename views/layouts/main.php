@@ -41,19 +41,22 @@ AppAsset::register($this);
             ['label' => 'Add task', 'url' => ['/tasks/add']],
             ['label' => 'Sign Up', 'url' => ['/auth/signup']],
             ['label' => 'My Account', 'url' => ['/auth/myaccount']],
-            ['label' => 'Logout', 'url' => ['/auth/logout']],
+
             Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/auth/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
+            ['label' => 'Login', 'url' => ['/auth/login']]
             )
+                : (['label' => 'Logout', 'url' => ['/auth/logout']])
+
+
+//                '<li>'
+//                . Html::beginForm(['/site/logout'], 'post')
+//                . Html::submitButton(
+//                    'Logout',
+//                    ['class' => 'btn btn-link logout']
+//                )
+//                . Html::endForm()
+//                . '</li>'
+
         ],
     ]);
     NavBar::end();

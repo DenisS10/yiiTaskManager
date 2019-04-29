@@ -24,7 +24,7 @@ class LoginForm extends Model
     {
         return [
             ['username','required','message' => 'Необходимо заполнить поле',],
-           // ['username','string','min' => 3,'tooShort' => 'You nickname is very short'],
+            //['password','string','min' => 3,'tooShort' => 'You nickname is very short'],
             ['password','required','message' => 'Необходимо заполнить поле'],
         ];
    }

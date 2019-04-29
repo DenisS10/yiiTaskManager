@@ -20,6 +20,9 @@ use yii\web\Controller;
 
 class AuthController extends Controller
 {
+    /**
+     *
+     */
     public function actionIndex()
     {
         if (!Yii::$app->session->get('auth') || Yii::$app->session->get('auth') != 'ok')
@@ -39,14 +42,14 @@ class AuthController extends Controller
      */
     public function actionLogin()
     {
-       // if (!Yii::$app->session->get('auth') || Yii::$app->session->get('auth') != 'ok')
-            //$this->redirect('login');
+        // if (!Yii::$app->session->get('auth') || Yii::$app->session->get('auth') != 'ok')
+        //$this->redirect('login');
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) ) {
             if ($model->validate()) {
                 $_user = Users::findByLogin($model->username);
                 if ($_user->login == $model->username && password_verify($model->password, $_user->password) == true) {
-                    header('location: main/index');
+
                     Yii::$app->session->setFlash('success', 'Вы успешно вошли в систему');
                     if (Yii::$app->session->isActive) {
                         Yii::$app->session->open();
@@ -82,9 +85,10 @@ class AuthController extends Controller
 
                     $_password = password_hash($model->password, PASSWORD_DEFAULT);
                     $newUser->login = $model->username;
-                    //$newUser->user_name = '';
+                    $newUser->mod_time = 0;
                     $newUser->password = $_password;
                     $newUser->first_time = time();
+
                     $newUser->save();
                     $this->refresh();
                     // $newUser->errors;
@@ -102,8 +106,9 @@ class AuthController extends Controller
     public function actionMyaccount()
     {
 
-        if (!Yii::$app->session->get('auth') || Yii::$app->session->get('auth') != 'ok') ;
-
+        // if (!Yii::$app->session->get('auth') || Yii::$app->session->get('auth') != 'ok') ;
+//        if (Yii::$app->user->isGuest)
+//            $this->redirect('login');
 
         $currUser = Users::getUserBySessionId();
         $model = new MyAccountForm();
@@ -123,6 +128,7 @@ class AuthController extends Controller
             'model' => $model,
         ]);
     }
+
     public function actionLogout()
     {
         if (Yii::$app->session->get('auth') == 'ok' || Yii::$app->session->get('auth') != 'ok')
