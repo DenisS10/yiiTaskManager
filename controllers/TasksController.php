@@ -125,9 +125,10 @@ class TasksController extends Controller
             $id = Yii::$app->request->get('numberOfRecord');
             $currTask = Task::getTaskById($id);
 
-
-            $currTask->delete();
-            $this->redirect('view');
+            if($currTask->user_id == Yii::$app->session->get('id')) {
+                $currTask->delete();
+                $this->redirect('view');
+            }
 //        } else
 //            $this->redirect('/auth/login');
     }
