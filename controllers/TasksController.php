@@ -13,6 +13,7 @@ use app\models\AddForm;
 use app\models\ModForm;
 use app\models\Task;
 use app\models\Users;
+use Symfony\Component\DomCrawler\Field\InputFormField;
 use Yii;
 use yii\web\Controller;
 
@@ -88,24 +89,25 @@ class TasksController extends Controller
         $model = new ModForm();
         $id = Yii::$app->request->get('id');
         $currTask = Task::getTaskById($id);
-        $model->taskMod = $currTask->task;
-        $model->deadlineMod = $currTask->deadline;
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->validate()) {
-                // echo '$model->validate()';
+        if($currTask != null) {
+            $model->taskMod = $currTask->task;
+            $model->deadlineMod = $currTask->deadline;
+            if ($model->load(Yii::$app->request->post())) {
+                if ($model->validate()) {
+                    // echo '$model->validate()';
 
-                $currTask->user_id = Yii::$app->session->get('id');
-                $currTask->task = $model->taskMod;
-                $currTask->deadline = $model->deadlineMod;
-                //$currTask->creation_date = $currTask->creation_date;
-                $currTask->mod_date = time();
+                    $currTask->user_id = Yii::$app->session->get('id');
+                    $currTask->task = $model->taskMod;
+                    $currTask->deadline = $model->deadlineMod;
+                    //$currTask->creation_date = $currTask->creation_date;
+                    $currTask->mod_date = time();
 
-                $currTask->save();
+                    $currTask->save();
 
-                $this->redirect('view');
+                    $this->redirect('view');
+                }
             }
         }
-
 
 //        echo '<pre>';
 //        print_r($currTask);
